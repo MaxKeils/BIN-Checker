@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -129,6 +130,7 @@ fun BankCard(
 
         }
 
+        Spacer(modifier = Modifier.height(height = 8.dp))
     }
 }
 
@@ -184,6 +186,7 @@ private fun BinInputField(state: TextFieldState) {
             },
             lineLimits = TextFieldLineLimits.SingleLine
         )
+        Spacer(modifier = Modifier.width(8.dp))
 
         repeat(3) {
             Text(
