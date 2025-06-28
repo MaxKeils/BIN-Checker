@@ -1,4 +1,4 @@
-package max.keils.binchecker.ui.components
+package max.keils.binchecker.presentation.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -35,8 +35,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import max.keils.binchecker.R
-import max.keils.binchecker.ui.theme.BINCheckerTheme
-import max.keils.binchecker.ui.theme.Typography
+import max.keils.binchecker.presentation.ui.theme.BINCheckerTheme
+import max.keils.binchecker.presentation.ui.theme.Typography
 
 @Composable
 fun BankCard(
@@ -44,7 +44,7 @@ fun BankCard(
     textFieldState: TextFieldState,
     bankName: String = "BANK NAME",
     cardHolder: String = "CARD HOLDER",
-    cardBrand: String = "CARD BRAND",
+    cardScheme: String = "CARD SCHEME",
     cardType: String = "CARD TYPE",
     expireDate: String = "XX/XX"
 ) {
@@ -124,13 +124,11 @@ fun BankCard(
                 textAlign = TextAlign.Left
             )
             Text(
-                text = cardBrand,
+                text = cardScheme,
                 style = MaterialTheme.typography.bodyLarge,
             )
 
         }
-
-        Spacer(modifier = Modifier.height(height = 8.dp))
     }
 }
 

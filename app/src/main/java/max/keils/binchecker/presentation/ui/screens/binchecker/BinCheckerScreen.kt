@@ -1,4 +1,4 @@
-package max.keils.binchecker.ui.screens
+package max.keils.binchecker.presentation.ui.screens.binchecker
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import max.keils.binchecker.ui.components.BankCard
-import max.keils.binchecker.ui.theme.BINCheckerTheme
+import max.keils.binchecker.presentation.ui.components.BankCard
+import max.keils.binchecker.presentation.ui.theme.BINCheckerTheme
 
 @Composable
 fun BinCheckerScreen(onCheckBinClick: () -> Unit = {}) {

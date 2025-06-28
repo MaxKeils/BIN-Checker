@@ -1,4 +1,4 @@
-package max.keils.binchecker.ui.theme
+package max.keils.binchecker.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
