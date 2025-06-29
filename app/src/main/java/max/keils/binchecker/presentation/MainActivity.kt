@@ -4,7 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.Surface
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import max.keils.binchecker.presentation.ui.navigation.AppNavHost
 import max.keils.binchecker.presentation.ui.screens.binchecker.BinCheckerScreen
 import max.keils.binchecker.presentation.ui.theme.BINCheckerTheme
 
@@ -15,7 +18,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BINCheckerTheme {
-                BinCheckerScreen()
+                Surface {
+                    val navController = rememberNavController()
+                    AppNavHost(
+                        navHostController = navController
+                    )
+                }
             }
         }
     }

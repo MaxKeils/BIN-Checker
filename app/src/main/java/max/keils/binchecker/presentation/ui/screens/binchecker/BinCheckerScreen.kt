@@ -33,7 +33,7 @@ import max.keils.binchecker.presentation.ui.theme.BINCheckerTheme
 @Composable
 fun BinCheckerScreen(
     viewModel: BinCheckerViewModel = hiltViewModel(),
-    onItemsListClick: () -> Unit = { }
+    onOpenBinsListClick: () -> Unit = { }
 ) {
 
     val currentBin by viewModel.currentBin.collectAsState()
@@ -63,7 +63,7 @@ fun BinCheckerScreen(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { BinCheckerScreenTopBar(onItemsListClick = onItemsListClick) },
+        topBar = { BinCheckerScreenTopBar(onItemsListClick = onOpenBinsListClick) },
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
     ) { innerPadding ->
         Column(
