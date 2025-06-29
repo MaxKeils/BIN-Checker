@@ -27,9 +27,6 @@ class BinCheckerViewModel @Inject constructor(
 
     fun onBinInputChange(newBin: String) {
         _currentBin.value = newBin.take(8)
-
-        if (_uiState is BinCheckerUiState.Success || _uiState is BinCheckerUiState.Error)
-            _uiState.value = BinCheckerUiState.Idle
     }
 
     fun binLookup() {
@@ -64,6 +61,10 @@ class BinCheckerViewModel @Inject constructor(
             )
 
         }
+    }
+
+    fun resetToDefaultState() {
+        _uiState.value = BinCheckerUiState.Idle
     }
 
 }

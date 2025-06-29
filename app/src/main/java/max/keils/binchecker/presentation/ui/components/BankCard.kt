@@ -43,6 +43,7 @@ fun BankCard(
     modifier: Modifier = Modifier,
     currentBin: String,
     onBinInputChange: (String) -> Unit = { },
+    isEditableBin: Boolean,
     bankName: String = "BANK NAME",
     cardHolder: String = "CARD HOLDER",
     cardScheme: String = "CARD SCHEME",
@@ -99,7 +100,8 @@ fun BankCard(
 
         BinInputField(
             value = currentBin,
-            onBinInputChange = onBinInputChange
+            onBinInputChange = onBinInputChange,
+            isEditable = isEditableBin
         )
 
         Spacer(modifier = Modifier.height(height = 8.dp))
@@ -138,14 +140,15 @@ fun BankCard(
 @Composable
 private fun BankCardPreview() {
     BINCheckerTheme {
-        BankCard(modifier = Modifier.padding(all = 16.dp), currentBin = "")
+        BankCard(modifier = Modifier.padding(all = 16.dp), currentBin = "", isEditableBin = true)
     }
 }
 
 @Composable
 private fun BinInputField(
     value: String,
-    onBinInputChange: (String) -> Unit
+    onBinInputChange: (String) -> Unit,
+    isEditable: Boolean = true
 ) {
 
     val state = rememberTextFieldState(value)
@@ -167,6 +170,7 @@ private fun BinInputField(
     ) {
         BasicTextField(
             state = state,
+            enabled = isEditable,
             inputTransformation = InputTransformation {
                 val currentText = asCharSequence().toString()
                 if (length > 8 || !currentText.isDigitsOnly())
@@ -216,11 +220,24 @@ private fun BinInputField(
 
 @Preview(showBackground = true)
 @Composable
-private fun BinInputFieldPreview() {
+private fun BinInputFieldIsEditablePreview() {
     BINCheckerTheme {
         BinInputField(
             value = "22222",
-            onBinInputChange = { }
+            onBinInputChange = { },
+            isEditable = true
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun BinInputFieldNotEditablePreview() {
+    BINCheckerTheme {
+        BinInputField(
+            value = "22222",
+            onBinInputChange = { },
+            isEditable = false
         )
     }
 }

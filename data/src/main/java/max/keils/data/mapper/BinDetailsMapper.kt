@@ -34,9 +34,9 @@ class BinDetailsMapper @Inject constructor() {
 
         val bankInfo = BankInfo(
             name = bankName,
-            url = bankDto.url,
-            phone = bankDto.phone,
-            city = bankDto.city
+            url = bankDto.url ?: "Unknown",
+            phone = bankDto.phone ?: "Unknown",
+            city = bankDto.city ?: "Unknown"
         )
 
         return BinDetails(
