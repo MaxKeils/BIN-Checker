@@ -10,13 +10,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,12 +26,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import max.keils.binchecker.presentation.ui.components.BankCard
 import max.keils.binchecker.presentation.ui.components.ModalBottomSheetCardBankContent
+import max.keils.binchecker.presentation.ui.components.TopBar
 import max.keils.binchecker.presentation.ui.theme.BINCheckerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BinCheckerScreen(
-    viewModel: BinCheckerViewModel = hiltViewModel()
+    viewModel: BinCheckerViewModel = hiltViewModel(),
+    onItemsListClick: () -> Unit = { }
 ) {
 
     val currentBin by viewModel.currentBin.collectAsState()
@@ -37,14 +41,31 @@ fun BinCheckerScreen(
 
     val sheetState = rememberModalBottomSheetState()
 
+    val snackBarHostState = remember { SnackbarHostState() }
+
     LaunchedEffect(uiState) {
-        if (uiState is BinCheckerUiState.Success)
-            sheetState.show()
-        else if (uiState is BinCheckerUiState.Idle && sheetState.isVisible)
-            sheetState.hide()
+        when (uiState) {
+            BinCheckerUiState.Idle -> {
+                if (sheetState.isVisible)
+                    sheetState.hide()
+            }
+
+            BinCheckerUiState.Loading -> {}
+            is BinCheckerUiState.Success -> {
+                sheetState.show()
+            }
+
+            is BinCheckerUiState.Error -> {
+                snackBarHostState.showSnackbar(message = (uiState as BinCheckerUiState.Error).message)
+            }
+        }
     }
 
-    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = { TopBar(onItemsListClick = onItemsListClick) },
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
+    ) { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -60,7 +81,7 @@ fun BinCheckerScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Button(
-                onClick = { viewModel.binLookup() },
+                onClick = viewModel::binLookup,
             ) {
                 Text(text = "LOOKUP")
             }
