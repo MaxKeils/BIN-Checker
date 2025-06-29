@@ -9,7 +9,7 @@ import max.keils.domain.usecase.GetBinDetailsUseCase
 
 @Module
 @InstallIn(SingletonComponent::class)
-class UseCaseModule {
+object UseCaseModule {
 
     @Provides
     fun provideGetBinDetailsUseCase(repository: BinRepository) = GetBinDetailsUseCase(repository)

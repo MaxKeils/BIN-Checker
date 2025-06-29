@@ -6,7 +6,7 @@ import retrofit2.http.Path
 
 interface Api {
 
-    @GET("{bin}")
+    @GET("/{bin}")
     suspend fun getBinDetails(
         @Path("bin") bin: String
     ): BinDetailsDto

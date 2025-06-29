@@ -17,7 +17,6 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.insert
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Card
@@ -26,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -41,7 +41,8 @@ import max.keils.binchecker.presentation.ui.theme.Typography
 @Composable
 fun BankCard(
     modifier: Modifier = Modifier,
-    textFieldState: TextFieldState,
+    currentBin: String,
+    onBinInputChange: (String) -> Unit = { },
     bankName: String = "BANK NAME",
     cardHolder: String = "CARD HOLDER",
     cardScheme: String = "CARD SCHEME",
@@ -74,8 +75,6 @@ fun BankCard(
             )
         }
 
-
-
         Spacer(modifier = Modifier.height(height = 8.dp))
 
         Row(
@@ -98,7 +97,10 @@ fun BankCard(
         }
         Spacer(modifier = Modifier.height(height = 8.dp))
 
-        BinInputField(state = textFieldState)
+        BinInputField(
+            value = currentBin,
+            onBinInputChange = onBinInputChange
+        )
 
         Spacer(modifier = Modifier.height(height = 8.dp))
 
@@ -135,14 +137,27 @@ fun BankCard(
 @Preview(showBackground = true)
 @Composable
 private fun BankCardPreview() {
-    val state = rememberTextFieldState()
     BINCheckerTheme {
-        BankCard(modifier = Modifier.padding(all = 16.dp), textFieldState = state)
+        BankCard(modifier = Modifier.padding(all = 16.dp), currentBin = "")
     }
 }
 
 @Composable
-private fun BinInputField(state: TextFieldState) {
+private fun BinInputField(
+    value: String,
+    onBinInputChange: (String) -> Unit
+) {
+
+    val state = rememberTextFieldState(value)
+
+    LaunchedEffect(value) {
+        if (state.text != value) {
+            state.edit {
+                replace(start = 0, end = length, text = value)
+            }
+        }
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -153,8 +168,11 @@ private fun BinInputField(state: TextFieldState) {
         BasicTextField(
             state = state,
             inputTransformation = InputTransformation {
-                if (length > 8 || !asCharSequence().isDigitsOnly())
+                val currentText = asCharSequence().toString()
+                if (length > 8 || !currentText.isDigitsOnly())
                     revertAllChanges()
+                else
+                    onBinInputChange(currentText)
             },
             outputTransformation = OutputTransformation {
                 if (length > 4) insert(4, " ")
@@ -199,8 +217,10 @@ private fun BinInputField(state: TextFieldState) {
 @Preview(showBackground = true)
 @Composable
 private fun BinInputFieldPreview() {
-    val state = rememberTextFieldState()
     BINCheckerTheme {
-        BinInputField(state = state)
+        BinInputField(
+            value = "22222",
+            onBinInputChange = { }
+        )
     }
 }
