@@ -28,7 +28,10 @@ fun AppNavHost(modifier: Modifier = Modifier, navHostController: NavHostControll
             })
         }
         composable<History> {
-            BinHistoryScreen()
+            BinHistoryScreen(onBackClick = {
+                navHostController.popBackStack()
+                navHostController.navigate(route = BinChecker)
+            })
         }
     }
 }

@@ -2,12 +2,18 @@ package max.keils.binchecker.presentation.ui.screens.history
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,6 +21,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -25,7 +33,8 @@ import max.keils.binchecker.presentation.ui.theme.BINCheckerTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BinHistoryScreen(
-    viewModel: BinHistoryViewModel = hiltViewModel<BinHistoryViewModel>()
+    viewModel: BinHistoryViewModel = hiltViewModel<BinHistoryViewModel>(),
+    onBackClick: () -> Unit = { }
 ) {
 
     val binList by viewModel.binList.collectAsState()
@@ -40,7 +49,9 @@ fun BinHistoryScreen(
             sheetState.hide()
     }
 
-    Scaffold { innerPadding ->
+    Scaffold(
+        topBar = { HistoryScreenTopBar(onBackClick = onBackClick) }
+    ) { innerPadding ->
 
         if (binList.isEmpty()) {
             Box(
@@ -52,9 +63,14 @@ fun BinHistoryScreen(
         } else {
             LazyColumn(modifier = Modifier.padding(innerPadding)) {
                 items(binList) { binDetails ->
-                    BinHistoryItem(bin = binDetails.bin, onDetailsButtonClick = {
-                        viewModel.setSelectedBinDetails(binDetails)
-                    })
+                    BinHistoryItem(
+                        modifier = Modifier.padding(
+                            start = 8.dp,
+                            end = 8.dp,
+                            top = 8.dp
+                        ), bin = binDetails.bin, onDetailsButtonClick = {
+                            viewModel.setSelectedBinDetails(binDetails)
+                        })
                 }
             }
         }
@@ -69,6 +85,35 @@ fun BinHistoryScreen(
             )
         }
 
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HistoryScreenTopBar(onBackClick: () -> Unit = { }) {
+    TopAppBar(
+        title = {
+            Text(
+                text = "History",
+                fontWeight = FontWeight.Medium
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = onBackClick) {
+                Icon(
+                    Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "arrow back"
+                )
+            }
+        }
+    )
+}
+
+@Preview
+@Composable
+private fun HistoryScreenTopBarPreview() {
+    BINCheckerTheme {
+        HistoryScreenTopBar()
     }
 }
 
