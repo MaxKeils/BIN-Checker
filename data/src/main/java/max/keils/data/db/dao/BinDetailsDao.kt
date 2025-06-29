@@ -17,6 +17,6 @@ interface BinDetailsDao {
     fun getAllBinDetails(): Flow<List<BinDetailsEntity>>
 
     @Query(value = "SELECT * FROM bin_details WHERE bin =:bin LIMIT 1")
-    fun getBinDetails(bin: String): BinDetailsEntity?
+    suspend fun getBinDetails(bin: String): BinDetailsEntity?
 
 }
