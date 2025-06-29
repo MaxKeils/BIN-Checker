@@ -19,7 +19,7 @@ import max.keils.binchecker.presentation.ui.theme.BINCheckerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(
+fun BinCheckerScreenTopBar(
     onItemsListClick: () -> Unit = { }
 ) {
     TopAppBar(
@@ -43,6 +43,6 @@ fun TopBar(
 @Composable
 private fun TopBarPreview() {
     BINCheckerTheme {
-        TopBar()
+        BinCheckerScreenTopBar()
     }
 }

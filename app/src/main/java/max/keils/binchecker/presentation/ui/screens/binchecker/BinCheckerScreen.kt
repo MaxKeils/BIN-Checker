@@ -25,8 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import max.keils.binchecker.presentation.ui.components.BankCard
-import max.keils.binchecker.presentation.ui.components.ModalBottomSheetCardBankContent
-import max.keils.binchecker.presentation.ui.components.TopBar
+import max.keils.binchecker.presentation.ui.components.BinCheckerScreenTopBar
+import max.keils.binchecker.presentation.ui.components.ModalBottomSheetBinDetails
 import max.keils.binchecker.presentation.ui.theme.BINCheckerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,7 +63,7 @@ fun BinCheckerScreen(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopBar(onItemsListClick = onItemsListClick) },
+        topBar = { BinCheckerScreenTopBar(onItemsListClick = onItemsListClick) },
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
     ) { innerPadding ->
         Column(
@@ -107,10 +107,10 @@ fun BinCheckerScreen(
         }
 
         if (sheetState.isVisible && uiState is BinCheckerUiState.Success) {
-            ModalBottomSheetCardBankContent(
-                sheetState = sheetState, (uiState as BinCheckerUiState.Success).binDetails,
+            ModalBottomSheetBinDetails(
+                sheetState = sheetState,
+                binDetails = (uiState as BinCheckerUiState.Success).binDetails,
                 onDismissRequest = viewModel::resetToDefaultState,
-                currentBin = currentBin
             )
         }
 

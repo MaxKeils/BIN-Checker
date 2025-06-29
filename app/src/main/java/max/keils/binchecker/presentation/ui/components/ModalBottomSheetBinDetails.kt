@@ -28,10 +28,9 @@ import max.keils.domain.entity.CountryInfo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ModalBottomSheetCardBankContent(
+fun ModalBottomSheetBinDetails(
     sheetState: SheetState,
     binDetails: BinDetails,
-    currentBin: String,
     onDismissRequest: () -> Unit = { }
 ) {
     ModalBottomSheet(
@@ -40,7 +39,6 @@ fun ModalBottomSheetCardBankContent(
     ) {
         BankCardSheetContent(
             binDetails = binDetails,
-            currentBin = currentBin,
             onDismissRequest = onDismissRequest
         )
     }
@@ -51,7 +49,6 @@ fun ModalBottomSheetCardBankContent(
 private fun BankCardSheetContent(
     modifier: Modifier = Modifier,
     binDetails: BinDetails,
-    currentBin: String,
     onDismissRequest: () -> Unit
 ) {
     Column(
@@ -64,7 +61,7 @@ private fun BankCardSheetContent(
         )
 
         BankCard(
-            currentBin = currentBin,
+            currentBin = binDetails.bin,
             bankName = binDetails.bank.name,
             cardScheme = binDetails.scheme,
             cardType = binDetails.type,
@@ -136,6 +133,7 @@ private fun RowItemPreview() {
 private fun ModalBottomSheetCardBankContentPreview() {
     BINCheckerTheme {
         val previewBinDetails = BinDetails(
+            bin = "2222 4444",
             scheme = "visa",
             type = "debit",
             brand = "Visa Classic",
@@ -159,7 +157,6 @@ private fun ModalBottomSheetCardBankContentPreview() {
 
         BankCardSheetContent(
             binDetails = previewBinDetails,
-            currentBin = "2222 4444",
             onDismissRequest = {}
         )
     }

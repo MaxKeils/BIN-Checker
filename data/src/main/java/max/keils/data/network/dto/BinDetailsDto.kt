@@ -12,7 +12,7 @@ data class BinDetailsDto(
     @SerializedName("prepaid")
     val prepaid: Boolean?,
     @SerializedName("country")
-    val country: CountryInfoDto?,
+    val country: CountryInfoDto,
     @SerializedName("bank")
-    val bank: BankInfoDto?
+    val bank: BankInfoDto
 )

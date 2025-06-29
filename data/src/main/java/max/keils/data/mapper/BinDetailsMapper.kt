@@ -1,51 +1,51 @@
 package max.keils.data.mapper
 
+import max.keils.data.db.entity.BinDetailsEntity
 import max.keils.data.network.dto.BinDetailsDto
-import max.keils.domain.entity.BankInfo
 import max.keils.domain.entity.BinDetails
-import max.keils.domain.entity.CountryInfo
-import max.keils.domain.error.BinLookupError
-import max.keils.domain.error.BinLookupException
 import javax.inject.Inject
 
-class BinDetailsMapper @Inject constructor() {
+class BinDetailsMapper @Inject constructor(
+    val countryMapper: CountryInfoMapper,
+    val bankMapper: BankInfoMapper
+) {
 
-    fun mapDtoToEntity(dto: BinDetailsDto): BinDetails {
-        val scheme = dto.scheme
-            ?: throw BinLookupException(BinLookupError.ApiError("Missing 'scheme' in API response"))
-        val type = dto.type
-            ?: throw BinLookupException(BinLookupError.ApiError("Missing 'type' in API response"))
-        val countryDto = dto.country
-            ?: throw BinLookupException(BinLookupError.ApiError("Missing 'country' in API response"))
-        val bankDto = dto.bank
-            ?: throw BinLookupException(BinLookupError.ApiError("Missing 'bank' in API response"))
-        val bankName = bankDto.name
-            ?: throw BinLookupException(BinLookupError.ApiError("Missing 'bank.name' in API response"))
+    fun mapDtoToDomainModel(binDetailsDto: BinDetailsDto, bin: String): BinDetails = BinDetails(
+        bin = bin,
+        scheme = binDetailsDto.scheme ?: UNKNOWN,
+        type = binDetailsDto.type ?: UNKNOWN,
+        brand = binDetailsDto.brand,
+        prepaid = binDetailsDto.prepaid,
+        country = countryMapper.mapDtoToDomainModel(binDetailsDto.country),
+        bank = bankMapper.mapDtoToDomainModel(binDetailsDto.bank)
+    )
 
-        val countryInfo = CountryInfo(
-            numeric = countryDto.numeric ?: "",
-            alpha2 = countryDto.alpha2 ?: "",
-            name = countryDto.name ?: "Unknown Country",
-            emoji = countryDto.emoji ?: "❓",
-            currency = countryDto.currency,
-            latitude = countryDto.latitude,
-            longitude = countryDto.longitude
+    fun mapDtoToDbEntity(binDetailsDto: BinDetailsDto, bin: String): BinDetailsEntity =
+        BinDetailsEntity(
+            bin = bin,
+            scheme = binDetailsDto.scheme ?: UNKNOWN,
+            type = binDetailsDto.type ?: UNKNOWN,
+            brand = binDetailsDto.brand,
+            prepaid = binDetailsDto.prepaid,
+            country = countryMapper.mapDtoToDbEntity(binDetailsDto.country),
+            bank = bankMapper.mapDtoToDbEntity(binDetailsDto.bank)
         )
 
-        val bankInfo = BankInfo(
-            name = bankName,
-            url = bankDto.url ?: "Unknown",
-            phone = bankDto.phone ?: "Unknown",
-            city = bankDto.city ?: "Unknown"
+    fun mapDbEntityToDomainModel(binDetails: BinDetailsEntity): BinDetails =
+        BinDetails(
+            bin = binDetails.bin,
+            scheme = binDetails.scheme,
+            type = binDetails.type,
+            brand = binDetails.type,
+            prepaid = binDetails.prepaid,
+            country = countryMapper.mapDbEntityToDomainModel(binDetails.country),
+            bank = bankMapper.mapDbModelToDomainModel(binDetails.bank),
         )
 
-        return BinDetails(
-            scheme = scheme,
-            type = type,
-            brand = dto.brand,
-            prepaid = dto.prepaid,
-            country = countryInfo,
-            bank = bankInfo
-        )
+    fun mapListDbEntityToListDomainModel(binDetailsListEntity: List<BinDetailsEntity>): List<BinDetails> =
+        binDetailsListEntity.map { mapDbEntityToDomainModel(it) }
+
+    companion object {
+        private const val UNKNOWN = "Unknown"
     }
 }
