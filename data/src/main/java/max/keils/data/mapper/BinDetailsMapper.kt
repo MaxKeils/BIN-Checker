@@ -36,7 +36,7 @@ class BinDetailsMapper @Inject constructor(
             bin = binDetails.bin,
             scheme = binDetails.scheme,
             type = binDetails.type,
-            brand = binDetails.type,
+            brand = binDetails.brand,
             prepaid = binDetails.prepaid,
             country = countryMapper.mapDbEntityToDomainModel(binDetails.country),
             bank = bankMapper.mapDbModelToDomainModel(binDetails.bank),

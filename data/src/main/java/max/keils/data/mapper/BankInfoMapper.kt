@@ -11,21 +11,21 @@ class BankInfoMapper @Inject constructor() {
         name = bankInfoDto.name ?: UNKNOWN,
         url = bankInfoDto.url ?: UNKNOWN,
         phone = bankInfoDto.phone ?: UNKNOWN,
-        city = bankInfoDto.phone ?: UNKNOWN
+        city = bankInfoDto.city ?: UNKNOWN
     )
 
     fun mapDbModelToDomainModel(bankInfoEntity: BankInfoEntity): BankInfo = BankInfo(
         name = bankInfoEntity.name,
         url = bankInfoEntity.url,
         phone = bankInfoEntity.phone,
-        city = bankInfoEntity.phone
+        city = bankInfoEntity.city
     )
 
     fun mapDtoToDbEntity(bankInfoDto: BankInfoDto): BankInfoEntity = BankInfoEntity(
         name = bankInfoDto.name ?: UNKNOWN,
         url = bankInfoDto.url ?: UNKNOWN,
         phone = bankInfoDto.phone ?: UNKNOWN,
-        city = bankInfoDto.phone ?: UNKNOWN
+        city = bankInfoDto.city ?: UNKNOWN
     )
 
     companion object {
