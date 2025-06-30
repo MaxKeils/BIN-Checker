@@ -56,7 +56,7 @@ fun BinHistoryScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(modifier = Modifier.padding(all = 16.dp), text = "No BINs saves yet.")
+                Text(modifier = Modifier.padding(all = 16.dp), text = "No BINs saved yet.")
             }
         } else {
             LazyColumn(modifier = Modifier.padding(innerPadding)) {
@@ -66,9 +66,12 @@ fun BinHistoryScreen(
                             start = 8.dp,
                             end = 8.dp,
                             top = 8.dp
-                        ), bin = binDetails.bin, onDetailsButtonClick = {
+                        ),
+                        bin = binDetails.bin,
+                        onDetailsButtonClick = {
                             viewModel.setSelectedBinDetails(binDetails)
-                        })
+                        }
+                    )
                 }
             }
         }
@@ -88,7 +91,7 @@ fun BinHistoryScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HistoryScreenTopBar(onBackClick: () -> Unit = { }) {
+private fun HistoryScreenTopBar(onBackClick: () -> Unit = { }) {
     TopAppBar(
         title = {
             Text(

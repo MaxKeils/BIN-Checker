@@ -29,9 +29,12 @@ fun BinHistoryItem(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            val formattedBin = bin.format().let {
+                it.substring(0, 4) + " " + it.substring(4)
+            }
             Text(
                 modifier = Modifier.padding(all = 8.dp),
-                text = "BIN: $bin",
+                text = "BIN: $formattedBin",
                 fontWeight = FontWeight.Bold
             )
             TextButton(
@@ -49,6 +52,6 @@ fun BinHistoryItem(
 @Composable
 private fun BinHistoryItemPreview() {
     BINCheckerTheme {
-        BinHistoryItem(modifier = Modifier.padding(all = 16.dp), bin = "1233 3333")
+        BinHistoryItem(modifier = Modifier.padding(all = 16.dp), bin = "12333333")
     }
 }

@@ -1,5 +1,6 @@
 package max.keils.binchecker.presentation.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,12 +17,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import max.keils.binchecker.presentation.ui.theme.BINCheckerTheme
+import max.keils.binchecker.presentation.util.openMap
+import max.keils.binchecker.presentation.util.openPhone
+import max.keils.binchecker.presentation.util.openUrl
 import max.keils.domain.entity.BankInfo
 import max.keils.domain.entity.BinDetails
 import max.keils.domain.entity.CountryInfo
@@ -51,6 +56,8 @@ private fun BankCardSheetContent(
     binDetails: BinDetails,
     onDismissRequest: () -> Unit
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
@@ -81,10 +88,37 @@ private fun BankCardSheetContent(
         RowItem("Brand", binDetails.brand.toString())
         RowItem("Country name", binDetails.country.name)
         RowItem("Country number", binDetails.country.numeric)
-        RowItem("Country latitude", binDetails.country.latitude.toString())
-        RowItem("Country longitude", binDetails.country.longitude.toString())
-        RowItem("Bank url", binDetails.bank.url)
-        RowItem("Bank phone", binDetails.bank.phone)
+        RowItem(
+            "Country latitude",
+            binDetails.country.latitude.toString(),
+            onClick = {
+                openMap(
+                    context,
+                    binDetails.country.latitude ?: 0.0,
+                    binDetails.country.longitude ?: 0.0
+                )
+            }
+        )
+        RowItem(
+            "Country longitude",
+            binDetails.country.longitude.toString(),
+            onClick = {
+                openMap(
+                    context,
+                    binDetails.country.latitude ?: 0.0,
+                    binDetails.country.longitude ?: 0.0
+                )
+            }
+        )
+        RowItem(
+            "Bank url",
+            binDetails.bank.url,
+            onClick = { openUrl(context, binDetails.bank.url) })
+        RowItem(
+            "Bank phone",
+            binDetails.bank.phone,
+            onClick = { openPhone(context, binDetails.bank.phone) }
+        )
         RowItem("Bank city", binDetails.bank.city)
 
 
@@ -100,8 +134,14 @@ private fun BankCardSheetContent(
 }
 
 @Composable
-private fun RowItem(label: String, value: String) {
-    Column {
+private fun RowItem(label: String, value: String, onClick: (() -> Unit)? = null) {
+    Column(
+        modifier = Modifier.then(
+            if (onClick != null) {
+                Modifier.clickable(onClick = onClick)
+            } else Modifier
+        )
+    ) {
         Text(
             text = label,
             fontSize = 16.sp,
