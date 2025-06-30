@@ -45,17 +45,15 @@ class BinCheckerViewModel @Inject constructor(
                     _uiState.value = BinCheckerUiState.Success(binDetails)
                 },
                 onFailure = { throwable ->
-                    val errorMessage = when (throwable) {
-                        is BinLookupException -> when (throwable.error) {
-                            is BinLookupError.ApiError -> "API Error: ${throwable.message}"
+                    val errorMessage =
+                        when (val error = (throwable as? BinLookupException)?.error) {
+                            is BinLookupError.ApiError -> "API Error: ${error.message}"
                             BinLookupError.BinNotFound -> "BIN not found. No information available for this card."
                             BinLookupError.InvalidBinFormat -> "Invalid BIN format. Please enter 6-8 digits."
                             BinLookupError.NetworkError -> "Network error. Please check your internet connection."
-                            is BinLookupError.UnknownError -> "An unknown error occurred: ${throwable.message}"
+                            is BinLookupError.UnknownError -> "An unknown error occurred: ${error.message}"
+                            null -> "An unexpected error occurred: ${throwable.message ?: "No details"}"
                         }
-
-                        else -> "An unexpected error occurred: ${throwable.message}"
-                    }
                     _uiState.value = BinCheckerUiState.Error(errorMessage)
                 }
             )

@@ -14,4 +14,7 @@ sealed class BinLookupError() {
 
 }
 
-class BinLookupException(val error: BinLookupError) : Exception()
+class BinLookupException(
+    val error: BinLookupError
+) :
+    Exception()

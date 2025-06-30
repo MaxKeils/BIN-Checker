@@ -57,6 +57,7 @@ fun BinCheckerScreen(
 
             is BinCheckerUiState.Error -> {
                 snackBarHostState.showSnackbar(message = (uiState as BinCheckerUiState.Error).message)
+                viewModel.resetToDefaultState()
             }
         }
     }
@@ -82,6 +83,7 @@ fun BinCheckerScreen(
 
             Button(
                 onClick = viewModel::binLookup,
+                enabled = uiState != BinCheckerUiState.Loading
             ) {
                 Text(text = "LOOKUP")
             }
@@ -96,13 +98,9 @@ fun BinCheckerScreen(
                     Text(text = "Loading BIN details...")
                 }
 
-                is BinCheckerUiState.Success -> {
-                    Log.d("UI_CHECKER", "${(uiState as BinCheckerUiState.Success).binDetails}")
-                }
+                is BinCheckerUiState.Success -> { }
 
-                is BinCheckerUiState.Error -> {
-                    Log.d("UI_CHECKER", "error: ${(uiState as BinCheckerUiState.Error).message}")
-                }
+                is BinCheckerUiState.Error -> { }
             }
         }
 
