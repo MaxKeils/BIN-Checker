@@ -1,4 +1,4 @@
-package max.keils.binchecker.ui.theme
+package max.keils.binchecker.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
@@ -32,3 +32,4 @@ val Typography = Typography(
     )
     */
 )
+val AppTypography = Typography()

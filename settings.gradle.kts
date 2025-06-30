@@ -21,3 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "BIN Checker"
 include(":app")
+include(":domain")
+include(":data")
